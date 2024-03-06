@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -44,7 +44,7 @@ def user_logout(request):
 @login_required(login_url='login')
 def home(request):
     userr = request.user
-    taskk = task.objects.filter(who_id = userr.user_id)
+    taskk = task.objects.filter(who = userr.user_id)
     return render(request,'home.html',{'taskk' : taskk})
 @login_required(login_url='login')
 def create(request):
@@ -55,7 +55,7 @@ def create(request):
         start_time = request.POST['start_time']
         deadline = request.POST['deadline']
         task.objects.create(
-            who_id = userr,
+            who_id = userr.user_id,
             description = description,
             priority = priority,
             start_time = start_time,
@@ -65,17 +65,25 @@ def create(request):
         return redirect('home')
     else:
         return render(request,'create.html')
+@login_required(login_url='login')
 def edit(request,id_need_edit):
-    task_edit = task.objects.get(pk = id_need_edit)
+    task_edit = get_object_or_404(task, task_id=id_need_edit)
     if(task_edit.who_id == request.user.user_id):
         if(request.method == 'POST'):
             task_edit.description = request.POST.get('description')
             task_edit.priority = request.POST.get('priority')
             task_edit.start_time = request.POST.get('start_time')
             task_edit.deadline = request.POST.get('deadline')
+            task_edit.complete = request.POST.get('complete')
             task_edit.save()
             return redirect('home')
         else:
             return render(request,'edit.html',{'task_edit' : task_edit })
     else:
         return redirect('error')
+@login_required(login_url='login')
+def delete(request,id_need_delete):
+    task_delete = get_object_or_404(task, task_id=id_need_delete)
+    if(request.method == 'GET'):
+        task_delete.delete()
+        return redirect('home')

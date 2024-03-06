@@ -1,17 +1,95 @@
 <!-- edit_post.html -->
-<h2>Edit task</h2>
-<form method="post" action="{% url 'edit' id_need_edit=task_edit.task_id %}">
-    {% csrf_token %}
-    <label for="description">Description:</label>
-    <textarea id="description" name="description">{{ task_edit.description }}</textarea><br>
-    
-    <label for="priority">Priority:</label>
-    <input type="text" id="priority" name="priority" >{{ task_edit.priority }}<br>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        textarea,
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Edit Task</h2>
+    <form method="post" action="{% url 'edit' id_need_edit=task_edit.task_id %}">
+        {% csrf_token %}
         
-    <label for="start_time">Starttime:</label>
-    <input type="date" id="start_time" name="start_time">{{ task_edit.start_time}}<br>
-    <label for="deadline">Deadline:</label>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description">{{ task_edit.description }}</textarea><br>
+        
+        <label for="priority">Priority:</label>
+        <select name="priority" id="priority" value = "{{ task_edit.priority }}">
+            <option value="Critical">Critical   </option>
+            <option value="Essential ">Essential</option>
+            <option value="Minor">Minor</option>
+        </select> <br><br>
     
-    <input type="date" id="deadline" name="deadline">{{ task_edit.deadline }}<br>
-    <button type="submit">Save changes</button>
-</form>
+        
+        <label for="start_time">Start Time:</label>
+        <input type="date" id="start_time" name="start_time" value="{{ task_edit.start_time|date:'Y-m-d'}}"><br>
+        
+        <label for="deadline">Deadline:</label>
+        <input type="date" id="deadline" name="deadline" value="{{ task_edit.deadline|date:'Y-m-d' }}"><br>
+        
+        <label for="complete">Status:</label>
+        <select name="complete" id="complete" value = "{{ task_edit.complete }}">
+            <option value="Done">Done !</option>
+            <option value="NotYet">Not Yet</option>
+        </select> <br><br>
+        
+        <button type="submit">Save Changes</button>
+    </form>
+</body>
+
+</html>

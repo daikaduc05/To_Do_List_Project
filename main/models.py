@@ -9,10 +9,11 @@ class users(AbstractUser):
     join_at = models.DateTimeField()
 class task(models.Model):
     task_id = models.AutoField(primary_key=True)
-    who_id = models.ForeignKey(users,on_delete=models.CASCADE)
+    who = models.ForeignKey(users,on_delete=models.CASCADE)
     description = models.TextField()
-    complete = models.BooleanField(default=False)
+    complete = models.CharField(max_length=200,default='Not Yet')
     priority = models.CharField(max_length=200)
     start_time = models.DateTimeField()
     deadline = models.DateTimeField()
     creat_at = models.DateTimeField()
+

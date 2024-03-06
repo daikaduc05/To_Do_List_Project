@@ -1,65 +1,170 @@
-<!-- templates/todo_list.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
+    <title>Home</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            height: 100;
+        }
+
+        .header {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px;
+            text-align: right;
+        }
+
+        .logout-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #2980b9;
         }
 
         .todo-container {
-            background-color: #fff;
+            background-color: #ecf0f1;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            width: 80%;
+            max-width: 400px;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         ul {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
 
         li {
-            padding: 8px;
-            margin-bottom: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 6px;
+            background-color: #fff;
+            position: relative;
         }
 
         label {
             display: block;
             font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .edit-btn {
+            text-decoration: none;
+            color: #2ecc71;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-weight: bold;
+            font-size: 12px;
+            transition: color 0.3s;
+        }
+
+        .edit-btn:hover {
+            color: #27ae60;
+        }
+
+        .delete-btn {
+            text-decoration: none;
+            color: #cc2e2e;
+            position: absolute;
+            nav-down: 15px;
+            right: 15px;
+            font-weight: bold;
+            font-size: 12px;
+            transition: color 0.3s;
+        }
+
+        .delete-btn:hover {
+            color: #ae2727;
+        }
+        .create {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .create a {
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .create a:hover {
+            background-color: #27ae60;
+        }
+
+        .no-activities {
+            color: #555;
+            text-align: center;
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <button class="logout-btn">
+            <a href="{%url 'logout'%}" style="text-decoration: none; color: white;">Log Out</a>
+        </button>
+    </div>
     <div class="todo-container">
-        <h2>To-Do List</h2>
+        <h2>{{request.user.username}}'s To-Do List</h2>
+        <div class="create">
+            <a href="{% url 'create' %}">Create New Task</a>
+        </div>
         {% if taskk %} 
             <ul id="todo-list">
                 {% for task in taskk %}
                     <li>
-                        <label>Content:</label> {{ task.description}}<br>
-                        <label>Stime:</label> {{ task.start_time}}<br>
-                        <label>Deadline:</label> {{ task.deadline}}<br>
-                        <label>Created At:</label> {{ task.created_at}}<br>
+                        <label>Task Description:</label> {{ task.description }}<br>
+                        <label>Start Time:</label> {{ task.start_time|date:"Y-m-d" }}<br>
+                        <label>Deadline:</label> {{ task.deadline|date:"Y-m-d" }}<br>
+                        <label>Status:</label> {{task.complete}}<br>
+                        <label class="creatat">Created At:</label> {{ task.creat_at|date:"Y-m-d H:i:s" }}<br>
+                        <a href="{% url 'edit' id_need_edit=task.task_id %}" class="edit-btn">Edit</a>
+                        <a href="{% url 'delete' id_need_delete=task.task_id %}" class="delete-btn">Delete</a>
                     </li>
                 {% endfor %}
             </ul>
-        {%else%}
-            <p>Not Yet Activity</p>
-        {%endif%}
+        {% else %}
+            <p class="no-activities">No activities yet.</p>
+        {% endif %}
     </div>
 </body>
 </html>
