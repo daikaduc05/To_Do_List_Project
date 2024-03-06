@@ -5,6 +5,8 @@ from django.utils import timezone
 from .models import task,users
 from django.contrib import messages
 # Create your views here.
+def error(request):
+    return render(request,'error.html')
 def guest_only(view_func):
     def wrapper(request, *args, **kwargs):
         if request.user.is_authenticated:
