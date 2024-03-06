@@ -1,0 +1,25 @@
+<!-- templates/input_form.html -->
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>New Task</h2>
+    <form method="post" action="{% url 'create' %}">
+        {% csrf_token %}
+        <label for="description">Deprecation:</label>
+        <textarea name="description" id="description" cols="30" rows="10" required></textarea> 
+        <br>
+       
+        <label for="priority">Priority:</label>
+        <input type="text" id="priority" name="priority" required><br>
+        
+        <label for="start_time">Starttime:</label>
+        <input type="date" id="start_time" name="start_time" required><br>
+   
+        
+        <label for="deadline">Deadline:</label>
+        <input type="date" id="deadline" name="deadline" required><br>
+
+        <button type = 'submit'> Submit </button>
+    </form>
+</body>
+</html>

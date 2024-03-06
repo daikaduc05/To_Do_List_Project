@@ -1,0 +1,65 @@
+<!-- templates/todo_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .todo-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="todo-container">
+        <h2>To-Do List</h2>
+        {% if taskk %} 
+            <ul id="todo-list">
+                {% for task in taskk %}
+                    <li>
+                        <label>Content:</label> {{ task.description}}<br>
+                        <label>Stime:</label> {{ task.start_time}}<br>
+                        <label>Deadline:</label> {{ task.deadline}}<br>
+                        <label>Created At:</label> {{ task.created_at}}<br>
+                    </li>
+                {% endfor %}
+            </ul>
+        {%else%}
+            <p>Not Yet Activity</p>
+        {%endif%}
+    </div>
+</body>
+</html>

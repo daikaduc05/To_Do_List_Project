@@ -1,0 +1,17 @@
+<!-- edit_post.html -->
+<h2>Edit task</h2>
+<form method="post" action="{% url 'edit' id_need_edit=task_edit.task_id %}">
+    {% csrf_token %}
+    <label for="description">Description:</label>
+    <textarea id="description" name="description">{{ task_edit.description }}</textarea><br>
+    
+    <label for="priority">Priority:</label>
+    <input type="text" id="priority" name="priority" >{{ task_edit.priority }}<br>
+        
+    <label for="start_time">Starttime:</label>
+    <input type="date" id="start_time" name="start_time">{{ task_edit.start_time}}<br>
+    <label for="deadline">Deadline:</label>
+    
+    <input type="date" id="deadline" name="deadline">{{ task_edit.deadline }}<br>
+    <button type="submit">Save changes</button>
+</form>
