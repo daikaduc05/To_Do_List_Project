@@ -8,6 +8,9 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 20px;
+            display: block;
+            margin : 0;
+            padding: 0;
         }
 
         h2 {
@@ -66,7 +69,7 @@
 </head>
 
 <body>
-    <div class="user-greeting">Hello, {{request.user.username}}!</div>
+    {%include "header.html" with user=request.user.username %}
     <h2 class="title">New Task</h2>
     <form method="post" action="{% url 'create' %}">
         {% csrf_token %}

@@ -10,21 +10,13 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            display: flex;
+            display: block;
             align-items: center;
             justify-content: center;
             height: 100;
         }
 
-        .header {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background-color: #2c3e50;
-            color: white;
-            padding: 10px;
-            text-align: right;
-        }
+      
 
         .logout-btn {
             background-color: #3498db;
@@ -50,7 +42,10 @@
             width: 80%;
             max-width: 400px;
             text-align: left;
-            margin-top: 20px;
+            clear: both;
+            align-items: center;
+            margin :auto;
+            margin-top: 5%;
         }
 
         h2 {
@@ -114,6 +109,7 @@
         .create {
             display: flex;
             margin-bottom: 20px;
+            clear: both;
         }
 
         .create a {
@@ -138,11 +134,7 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <button class="logout-btn">
-            <a href="{%url 'logout'%}" style="text-decoration: none; color: white;">Log Out</a>
-        </button>
-    </div>
+    {%include "header.html" with user=request.user.username %}
     <div class="todo-container">
         <h2>{{request.user.username}}'s To-Do List</h2>
         <div class="create">
