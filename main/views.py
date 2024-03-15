@@ -49,40 +49,37 @@ def home(request):
     taskk = task.objects.filter(who = userr.user_id)
     return render(request,'home.html',{'taskk' : taskk})
 @login_required(login_url='login')
-def create(request):
+def form(request,this_task_id,type):
     userr = request.user
+    this_task = get_object_or_404(task,task_id = this_task_id)
+    content = {
+        'type' : type,
+        'this_task' : this_task,
+    }
     if request.method == 'POST' :
         description = request.POST['description']
         priority = request.POST['priority']
         start_time = request.POST['start_time']
         deadline = request.POST['deadline']
-        task.objects.create(
-            who_id = userr.user_id,
-            description = description,
-            priority = priority,
-            start_time = start_time,
-            deadline = deadline,
-            creat_at = timezone.now()
-        )
+        if(type == 'Create'):
+            task.objects.create(
+                who_id = userr.user_id,
+                description = description,
+                priority = priority,
+                start_time = start_time,
+                deadline = deadline,
+                creat_at = timezone.now()
+            )
+        elif(type == 'Edit'):
+            this_task.description = description
+            this_task.priority = priority
+            this_task.start_time = start_time
+            this_task.deadline = deadline
+            this_task.save()
         return redirect('home')
+
     else:
-        return render(request,'create.html')
-@login_required(login_url='login')
-def edit(request,id_need_edit):
-    task_edit = get_object_or_404(task, task_id=id_need_edit)
-    if(task_edit.who_id == request.user.user_id):
-        if(request.method == 'POST'):
-            task_edit.description = request.POST.get('description')
-            task_edit.priority = request.POST.get('priority')
-            task_edit.start_time = request.POST.get('start_time')
-            task_edit.deadline = request.POST.get('deadline')
-            task_edit.complete = request.POST.get('complete')
-            task_edit.save()
-            return redirect('home')
-        else:
-            return render(request,'edit.html',{'task_edit' : task_edit })
-    else:
-        return redirect('error')
+        return render(request,'form.html',content)
 @login_required(login_url='login')
 def delete(request,id_need_delete):
     task_delete = get_object_or_404(task, task_id=id_need_delete)

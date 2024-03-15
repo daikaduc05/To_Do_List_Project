@@ -65,31 +65,33 @@
 
 <body>
     {%include "header.html" with user=request.user.username %}
-    <h2>Edit Task</h2>
-    <form method="post" action="{% url 'edit' id_need_edit=task_edit.task_id %}">
+    {%if type == 'Edit'%}
+        <h2>Edit Task</h2>
+    {%elif type == 'Create'%}
+        <h2>New Task</h2>
+    {%endif%}
+    <form method="post" action="{% url 'form' this_task_id=this_task.task_id type=type %}">
         {% csrf_token %}
         
         <label for="description">Description:</label>
-        <textarea id="description" name="description">{{ task_edit.description }}</textarea><br>
+        <textarea id="description" name="description">{{ this_task.description }}</textarea><br>
         
         <label for="priority">Priority:</label>
-        <select name="priority" id="priority" value = "{{ task_edit.priority }}">
-            <option value="Critical">Critical   </option>
-            <option value="Essential ">Essential</option>
-            <option value="Minor">Minor</option>
+        <select name="priority" id="priority" value = "{{ this_task.priority }}">
+            <option value="Critical" {% if this_task.priority == "Critical" %} selected {% endif %}>Critical </option>
+            <option value="Essential" {% if this_task.priority == "Essential" %} selected {% endif %}>Essential </option>
+            <option value="Minor" {% if this_task.priority == "Minor" %} selected {% endif %}>Minor </option>
         </select> <br><br>
-    
-        
         <label for="start_time">Start Time:</label>
-        <input type="date" id="start_time" name="start_time" value="{{ task_edit.start_time|date:'Y-m-d'}}"><br>
-        
+        <input type="datetime-local" id="start_time" name="start_time" value="{{ this_task.start_time|date:'Y-m-d H:i:s'}}"><br>
+
         <label for="deadline">Deadline:</label>
-        <input type="date" id="deadline" name="deadline" value="{{ task_edit.deadline|date:'Y-m-d' }}"><br>
+        <input type="datetime-local" id="deadline" name="deadline" value="{{ this_task.deadline|date:'Y-m-d H:i:s'}}"><br>
         
         <label for="complete">Status:</label>
-        <select name="complete" id="complete" value = "{{ task_edit.complete }}">
-            <option value="Done">Done !</option>
-            <option value="NotYet">Not Yet</option>
+        <select name="complete" id="complete" value = "{{ this_task.complete }}">
+            <option value="Done" {%if this_task.complete == 'Done'%} selected {%endif%}>Done !</option>
+            <option value="Not yet" {%if this_task.complete == 'Not yet' or type == 'Create' %} selected {%endif%}>Not yet!</option>
         </select> <br><br>
         
         <button type="submit">Save Changes</button>

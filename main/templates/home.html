@@ -10,13 +10,7 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            display: block;
-            align-items: center;
-            justify-content: center;
-            height: 100;
         }
-
-      
 
         .logout-btn {
             background-color: #3498db;
@@ -35,85 +29,74 @@
         }
 
         .todo-container {
-            background-color: #ecf0f1;
+            background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 80%;
-            max-width: 400px;
-            text-align: left;
-            clear: both;
-            align-items: center;
-            margin :auto;
+            max-width: 800px;
+            margin: auto;
             margin-top: 5%;
         }
 
         h2 {
-            color: #2c3e50;
+            color: #333;
             border-bottom: 2px solid #3498db;
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        li {
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            background-color: #fff;
-            position: relative;
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            color: #333;
         }
 
-        label {
-            display: block;
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .edit-btn, .delete-btn {
+            text-decoration: none;
             font-weight: bold;
-            margin-bottom: 8px;
-            color: #555;
+            transition: color 0.3s;
+            margin-right: 10px; /* Khoảng cách giữa các nút */
         }
 
         .edit-btn {
-            text-decoration: none;
-            color: #2ecc71;
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-weight: bold;
-            font-size: 12px;
-            transition: color 0.3s;
+            color: #27ae60; /* Màu xanh lá cây */
         }
 
         .edit-btn:hover {
-            color: #27ae60;
+            color: #2ecc71; /* Màu xanh lá cây sáng hơn khi hover */
         }
 
         .delete-btn {
-            text-decoration: none;
-            color: #cc2e2e;
-            position: absolute;
-            nav-down: 15px;
-            right: 15px;
-            font-weight: bold;
-            font-size: 12px;
-            transition: color 0.3s;
+            color: #e74c3c; /* Màu đỏ */
         }
 
         .delete-btn:hover {
-            color: #ae2727;
+            color: #c0392b; /* Màu đỏ sáng hơn khi hover */
         }
+
+        .no-activities {
+            color: #777;
+            text-align: center;
+        }
+
         .create {
-            display: flex;
             margin-bottom: 20px;
-            clear: both;
+            text-align: right;
         }
 
         .create a {
-            background-color: #2ecc71;
+            background-color: #3498db;
             color: white;
             padding: 10px 15px;
             border: none;
@@ -124,36 +107,41 @@
         }
 
         .create a:hover {
-            background-color: #27ae60;
-        }
-
-        .no-activities {
-            color: #555;
-            text-align: center;
+            background-color: #2980b9;
         }
     </style>
 </head>
 <body>
-    {%include "header.html" with user=request.user.username %}
+    {% include "header.html" with user=request.user.username %}
     <div class="todo-container">
-        <h2>{{request.user.username}}'s To-Do List</h2>
+        <h2>{{ request.user.username }}'s To-Do List</h2>
         <div class="create">
-            <a href="{% url 'create' %}">Create New Task</a>
+            <a href="{% url 'form' this_task_id=0 type='Create' %}">Create New Task</a>
         </div>
-        {% if taskk %} 
-            <ul id="todo-list">
+        {% if taskk %}
+            <table>
+                <tr>
+                    <th>Task Description</th>
+                    <th>Start Time</th>
+                    <th>Priority</th>
+                    <th>Deadline</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
                 {% for task in taskk %}
-                    <li>
-                        <label>Task Description:</label> {{ task.description }}<br>
-                        <label>Start Time:</label> {{ task.start_time|date:"Y-m-d" }}<br>
-                        <label>Deadline:</label> {{ task.deadline|date:"Y-m-d" }}<br>
-                        <label>Status:</label> {{task.complete}}<br>
-                        <label class="creatat">Created At:</label> {{ task.creat_at|date:"Y-m-d H:i:s" }}<br>
-                        <a href="{% url 'edit' id_need_edit=task.task_id %}" class="edit-btn">Edit</a>
-                        <a href="{% url 'delete' id_need_delete=task.task_id %}" class="delete-btn">Delete</a>
-                    </li>
+                    <tr>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.start_time|date:"Y-m-d H:i:s" }}</td>
+                        <td>{{ task.priority }}</td>
+                        <td>{{ task.deadline|date:"Y-m-d H:i:s" }}</td>
+                        <td>{{ task.complete }}</td>
+                        <td>
+                            <a href="{% url 'form' this_task_id=task.task_id type='Edit' %}" class="edit-btn">Edit</a>
+                            <a href="{% url 'delete' id_need_delete=task.task_id %}" class="delete-btn">Delete</a>
+                        </td>
+                    </tr>
                 {% endfor %}
-            </ul>
+            </table>
         {% else %}
             <p class="no-activities">No activities yet.</p>
         {% endif %}

@@ -22,8 +22,7 @@ urlpatterns = [
    path('login/',views.user_login,name = 'login' ),
    path('home/',views.home,name = 'home'),
    path('logout/',views.user_logout,name = 'logout'),
-   path('create/',views.create,name = 'create'),
-   path('edit/<int:id_need_edit>',views.edit,name = 'edit'),
+   path('form/<int:this_task_id>/<str:type>',views.form,name = 'form'),
    path('delete/<int:id_need_delete>',views.delete,name = 'delete'),
    path('error/',views.error,name = 'error')
 ]
