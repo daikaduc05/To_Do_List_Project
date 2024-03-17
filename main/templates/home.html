@@ -116,7 +116,7 @@
     <div class="todo-container">
         <h2>{{ request.user.username }}'s To-Do List</h2>
         <div class="create">
-            <a href="{% url 'form' this_task_id=0 type='Create' %}">Create New Task</a>
+            <a href={%url 'form' type='Create' task_Id=0%}>Create New Task</a>
         </div>
         {% if taskk %}
             <table>
@@ -136,8 +136,8 @@
                         <td>{{ task.deadline|date:"Y-m-d H:i:s" }}</td>
                         <td>{{ task.complete }}</td>
                         <td>
-                            <a href="{% url 'form' this_task_id=task.task_id type='Edit' %}" class="edit-btn">Edit</a>
-                            <a href="{% url 'delete' id_need_delete=task.task_id %}" class="delete-btn">Delete</a>
+                            <a href="{% url 'form' type='Edit' task_Id=task.task_id %}" class="edit-btn">Edit</a>
+                            <a href="{% url 'delete' task.task_id %}" class="delete-btn">Delete</a>
                         </td>
                     </tr>
                 {% endfor %}

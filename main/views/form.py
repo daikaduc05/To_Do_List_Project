@@ -3,13 +3,15 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.shortcuts import render,redirect,get_object_or_404
 @login_required(login_url='login')
-def form(request,this_task_id,type):
+def form(request,type,task_Id):
     userr = request.user
-    this_task = get_object_or_404(task,task_id = this_task_id)
     content = {
-        'type' : type,
-        'this_task' : this_task,
+        'type' : type 
     }
+    if(type == 'Edit'):
+        this_task = get_object_or_404(task,task_id = task_Id)
+        content['this_task'] = this_task
+     
     if request.method == 'POST' :
         description = request.POST['description']
         priority = request.POST['priority']
@@ -33,6 +35,5 @@ def form(request,this_task_id,type):
             this_task.complete = complete
             this_task.save()
         return redirect('home')
-
     else:
         return render(request,'form.html',content)
